@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
@@ -6,10 +6,51 @@ import {
   GraduationCap, Wrench, Smile, ChevronDown, MapPin, Phone, Mail, MessageCircle,
   ArrowRight, Check, Calendar, Clock, PartyPopper,
 } from "lucide-react";
+import { PROGRAMS as ACADEMY_PROGRAMS } from "@/lib/academy";
+import { useBooking } from "@/components/BookingContext";
+
+const SITE_FAQS = [
+  { q: "What age can my child start gymnastics?", a: "We welcome children from just 12 months in our Parent & Toddler class right through to our senior competitive squad." },
+  { q: "Do I need to book a trial before joining?", a: "Yes — a free trial helps our coaches place your child in the perfect class based on age and ability." },
+  { q: "What should my child wear?", a: "A leotard or fitted t-shirt with leggings or shorts works best. Long hair tied back and no jewellery, please." },
+  { q: "Are your coaches qualified?", a: "All coaches hold British Gymnastics qualifications, are DBS checked and hold paediatric first-aid certificates." },
+  { q: "Can parents watch classes?", a: "Absolutely. We have a dedicated viewing area so you can enjoy every wobble, giggle and triumph." },
+  { q: "Do you host birthday parties?", a: "Yes — our themed gymnastics parties include coach-led games, apparatus play and a dedicated party space." },
+];
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SportsActivityLocation",
+          name: "Kensington & Chelsea Gymnastics Academy",
+          description: "Professional gymnastics coaching for children of all ages and abilities in Kensington & Chelsea.",
+          address: { "@type": "PostalAddress", addressLocality: "Kensington & Chelsea", addressRegion: "London", addressCountry: "GB" },
+          areaServed: ["Kensington", "Chelsea", "Notting Hill", "South Kensington", "Earl's Court", "Fulham"],
+          sport: "Gymnastics",
+          aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "200" },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: SITE_FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+    ],
+  }),
   component: HomePage,
 });
+
 
 // -------- image sources (real photography from Unsplash — free to use) --------
 const HERO_IMG =
@@ -203,6 +244,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
 
 // ============================================================================
 function HomePage() {
+  const booking = useBooking();
   const [navOpen, setNavOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [filterAge, setFilterAge] = useState("All");
@@ -210,6 +252,7 @@ function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [reviewIdx, setReviewIdx] = useState(0);
+  
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -276,12 +319,13 @@ function HomePage() {
               ))}
             </ul>
             <div className="flex items-center gap-2">
-              <a
-                href="#contact"
+              <button
+                type="button"
+                onClick={() => booking.open()}
                 className="hidden rounded-full gradient-brand px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03] hover:shadow-xl sm:inline-flex"
               >
                 Book a Free Trial
-              </a>
+              </button>
               <button
                 aria-label={navOpen ? "Close menu" : "Open menu"}
                 onClick={() => setNavOpen((o) => !o)}
@@ -313,13 +357,13 @@ function HomePage() {
                   </li>
                 ))}
                 <li className="pt-2">
-                  <a
-                    href="#contact"
-                    onClick={() => setNavOpen(false)}
-                    className="block rounded-2xl gradient-brand px-4 py-3 text-center font-semibold text-white"
+                  <button
+                    type="button"
+                    onClick={() => { setNavOpen(false); booking.open(); }}
+                    className="block w-full rounded-2xl gradient-brand px-4 py-3 text-center font-semibold text-white"
                   >
                     Book a Free Trial
-                  </a>
+                  </button>
                 </li>
               </ul>
             </motion.div>
@@ -361,13 +405,14 @@ function HomePage() {
             </Reveal>
             <Reveal delay={0.25}>
               <div className="mt-8 flex flex-wrap gap-3">
-                <a
-                  href="#contact"
+                <button
+                  type="button"
+                  onClick={() => booking.open()}
                   className="group inline-flex items-center gap-2 rounded-full gradient-brand px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand/30 transition hover:scale-[1.03] hover:shadow-xl"
                 >
                   Book Free Trial
                   <ArrowRight size={18} className="transition group-hover:translate-x-1" />
-                </a>
+                </button>
                 <a
                   href="#classes"
                   className="inline-flex items-center gap-2 rounded-full border border-brand-ink/15 bg-white px-6 py-3.5 font-semibold text-brand-ink transition hover:border-brand-ink/40 hover:shadow-md"
@@ -486,11 +531,15 @@ function HomePage() {
             sub="From wobbly first steps to competitive squad — thoughtfully designed classes for every age and ambition."
           />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {PROGRAMS.map((p, i) => (
-              <Reveal key={p.title} delay={i * 0.05}>
-                <article className="group relative h-full overflow-hidden rounded-3xl border border-brand-ink/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            {ACADEMY_PROGRAMS.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 0.05}>
+                <Link
+                  to="/classes/$slug"
+                  params={{ slug: p.slug }}
+                  className="group relative block h-full overflow-hidden rounded-3xl border border-brand-ink/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                >
                   <div className="relative aspect-[5/4] overflow-hidden">
-                    <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                    <img src={p.hero} alt={p.title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/60 via-transparent to-transparent" />
                     <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-brand-ink backdrop-blur">
                       {p.age}
@@ -498,12 +547,12 @@ function HomePage() {
                   </div>
                   <div className="p-6">
                     <h3 className="font-display text-xl font-bold">{p.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-brand-ink/70">{p.desc}</p>
-                    <a href="#contact" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand transition group-hover:gap-2">
-                      Learn more <ArrowRight size={14} />
-                    </a>
+                    <p className="mt-2 text-sm leading-relaxed text-brand-ink/70">{p.short}</p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand transition group-hover:gap-2">
+                      View class <ArrowRight size={14} />
+                    </span>
                   </div>
-                </article>
+                </Link>
               </Reveal>
             ))}
           </div>
@@ -999,9 +1048,9 @@ function HomePage() {
           <a href="tel:+442000000000" className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-brand-ink/10 text-brand-ink">
             <Phone size={18} />
           </a>
-          <a href="#contact" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full gradient-brand px-4 py-3 font-semibold text-white shadow-md">
+          <button type="button" onClick={() => booking.open()} className="inline-flex flex-1 items-center justify-center gap-2 rounded-full gradient-brand px-4 py-3 font-semibold text-white shadow-md">
             Book Free Trial <ArrowRight size={16} />
-          </a>
+          </button>
         </div>
       </div>
 
