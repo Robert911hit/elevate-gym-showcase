@@ -4,10 +4,9 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Menu, X, Star, ShieldCheck, Users, Sparkles, Trophy, Heart, Dumbbell,
   GraduationCap, Wrench, Smile, ChevronDown, MapPin, Phone, Mail, MessageCircle,
-  ArrowRight, Check, Calendar, Clock, PartyPopper, Train, Landmark, Building2,
+  ArrowRight, Check, Calendar, Clock, PartyPopper,
 } from "lucide-react";
 import { COACHES as ACADEMY_COACHES, PROGRAMS as ACADEMY_PROGRAMS } from "@/lib/academy";
-import { CoachAvailability } from "@/components/CoachAvailability";
 import { useBooking } from "@/components/BookingContext";
 
 const SITE_FAQS = [
