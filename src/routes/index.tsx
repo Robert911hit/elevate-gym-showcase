@@ -1049,9 +1049,9 @@ function HomePage() {
           <a href="tel:+442000000000" className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-brand-ink/10 text-brand-ink">
             <Phone size={18} />
           </a>
-          <a href="#contact" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full gradient-brand px-4 py-3 font-semibold text-white shadow-md">
+          <button type="button" onClick={() => booking.open()} className="inline-flex flex-1 items-center justify-center gap-2 rounded-full gradient-brand px-4 py-3 font-semibold text-white shadow-md">
             Book Free Trial <ArrowRight size={16} />
-          </a>
+          </button>
         </div>
       </div>
 
