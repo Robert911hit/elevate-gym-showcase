@@ -6,7 +6,7 @@ import {
   GraduationCap, Wrench, Smile, ChevronDown, MapPin, Phone, Mail, MessageCircle,
   ArrowRight, Check, Calendar, Clock, PartyPopper,
 } from "lucide-react";
-import { COACHES as ACADEMY_COACHES, PROGRAMS as ACADEMY_PROGRAMS } from "@/lib/academy";
+import { PROGRAMS as ACADEMY_PROGRAMS } from "@/lib/academy";
 import { useBooking } from "@/components/BookingContext";
 
 const SITE_FAQS = [
@@ -252,7 +252,7 @@ function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [reviewIdx, setReviewIdx] = useState(0);
-  const [availabilityCoach, setAvailabilityCoach] = useState(ACADEMY_COACHES[0].slug);
+  
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
