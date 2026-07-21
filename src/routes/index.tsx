@@ -532,11 +532,15 @@ function HomePage() {
             sub="From wobbly first steps to competitive squad — thoughtfully designed classes for every age and ambition."
           />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {PROGRAMS.map((p, i) => (
-              <Reveal key={p.title} delay={i * 0.05}>
-                <article className="group relative h-full overflow-hidden rounded-3xl border border-brand-ink/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            {ACADEMY_PROGRAMS.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 0.05}>
+                <Link
+                  to="/classes/$slug"
+                  params={{ slug: p.slug }}
+                  className="group relative block h-full overflow-hidden rounded-3xl border border-brand-ink/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                >
                   <div className="relative aspect-[5/4] overflow-hidden">
-                    <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                    <img src={p.hero} alt={p.title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/60 via-transparent to-transparent" />
                     <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-brand-ink backdrop-blur">
                       {p.age}
@@ -544,12 +548,12 @@ function HomePage() {
                   </div>
                   <div className="p-6">
                     <h3 className="font-display text-xl font-bold">{p.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-brand-ink/70">{p.desc}</p>
-                    <a href="#contact" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand transition group-hover:gap-2">
-                      Learn more <ArrowRight size={14} />
-                    </a>
+                    <p className="mt-2 text-sm leading-relaxed text-brand-ink/70">{p.short}</p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand transition group-hover:gap-2">
+                      View class <ArrowRight size={14} />
+                    </span>
                   </div>
-                </article>
+                </Link>
               </Reveal>
             ))}
           </div>
