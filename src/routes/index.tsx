@@ -406,13 +406,14 @@ function HomePage() {
             </Reveal>
             <Reveal delay={0.25}>
               <div className="mt-8 flex flex-wrap gap-3">
-                <a
-                  href="#contact"
+                <button
+                  type="button"
+                  onClick={() => booking.open()}
                   className="group inline-flex items-center gap-2 rounded-full gradient-brand px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand/30 transition hover:scale-[1.03] hover:shadow-xl"
                 >
                   Book Free Trial
                   <ArrowRight size={18} className="transition group-hover:translate-x-1" />
-                </a>
+                </button>
                 <a
                   href="#classes"
                   className="inline-flex items-center gap-2 rounded-full border border-brand-ink/15 bg-white px-6 py-3.5 font-semibold text-brand-ink transition hover:border-brand-ink/40 hover:shadow-md"
