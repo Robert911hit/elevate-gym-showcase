@@ -144,7 +144,7 @@ function ClassDetailPage() {
             Every {program.title.toLowerCase()} class follows a proven structure — warm-up, skill blocks and a cool-down.
           </p>
           <ol className="mt-10 grid gap-4 sm:grid-cols-2">
-            {program.curriculum.map((c, i) => (
+            {program.curriculum.map((c: { title: string; desc: string }, i: number) => (
               <li key={c.title} className="rounded-3xl border border-brand-ink/5 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-3">
                   <span className="grid h-9 w-9 place-items-center rounded-full gradient-brand text-sm font-bold text-white">
