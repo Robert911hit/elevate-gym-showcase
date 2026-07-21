@@ -245,6 +245,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
 
 // ============================================================================
 function HomePage() {
+  const booking = useBooking();
   const [navOpen, setNavOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [filterAge, setFilterAge] = useState("All");
@@ -252,6 +253,7 @@ function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [reviewIdx, setReviewIdx] = useState(0);
+  const [availabilityCoach, setAvailabilityCoach] = useState(ACADEMY_COACHES[0].slug);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
