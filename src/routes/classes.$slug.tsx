@@ -167,7 +167,7 @@ function ClassDetailPage() {
               What your child will <span className="text-gradient-brand">take away</span>
             </h2>
             <ul className="mt-6 space-y-3">
-              {program.outcomes.map((o) => (
+              {program.outcomes.map((o: string) => (
                 <li key={o} className="flex items-start gap-3 rounded-2xl border border-brand-ink/5 bg-white p-4 shadow-sm">
                   <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full gradient-brand text-white">
                     <Check size={12} />
@@ -195,7 +195,7 @@ function ClassDetailPage() {
         <div className="container-tight max-w-3xl">
           <h2 className="font-display text-3xl font-black sm:text-4xl">Frequently asked</h2>
           <ul className="mt-8 space-y-3">
-            {program.faqs.map((f, i) => {
+            {program.faqs.map((f: { q: string; a: string }, i: number) => {
               const open = openFaq === i;
               return (
                 <li key={f.q}>
