@@ -1,15 +1,57 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Menu, X, Star, ShieldCheck, Users, Sparkles, Trophy, Heart, Dumbbell,
   GraduationCap, Wrench, Smile, ChevronDown, MapPin, Phone, Mail, MessageCircle,
-  ArrowRight, Check, Calendar, Clock, PartyPopper,
+  ArrowRight, Check, Calendar, Clock, PartyPopper, Train, Landmark, Building2,
 } from "lucide-react";
+import { COACHES as ACADEMY_COACHES, PROGRAMS as ACADEMY_PROGRAMS } from "@/lib/academy";
+import { CoachAvailability } from "@/components/CoachAvailability";
+import { useBooking } from "@/components/BookingContext";
+
+const SITE_FAQS = [
+  { q: "What age can my child start gymnastics?", a: "We welcome children from just 12 months in our Parent & Toddler class right through to our senior competitive squad." },
+  { q: "Do I need to book a trial before joining?", a: "Yes — a free trial helps our coaches place your child in the perfect class based on age and ability." },
+  { q: "What should my child wear?", a: "A leotard or fitted t-shirt with leggings or shorts works best. Long hair tied back and no jewellery, please." },
+  { q: "Are your coaches qualified?", a: "All coaches hold British Gymnastics qualifications, are DBS checked and hold paediatric first-aid certificates." },
+  { q: "Can parents watch classes?", a: "Absolutely. We have a dedicated viewing area so you can enjoy every wobble, giggle and triumph." },
+  { q: "Do you host birthday parties?", a: "Yes — our themed gymnastics parties include coach-led games, apparatus play and a dedicated party space." },
+];
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SportsActivityLocation",
+          name: "Kensington & Chelsea Gymnastics Academy",
+          description: "Professional gymnastics coaching for children of all ages and abilities in Kensington & Chelsea.",
+          address: { "@type": "PostalAddress", addressLocality: "Kensington & Chelsea", addressRegion: "London", addressCountry: "GB" },
+          areaServed: ["Kensington", "Chelsea", "Notting Hill", "South Kensington", "Earl's Court", "Fulham"],
+          sport: "Gymnastics",
+          aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "200" },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: SITE_FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+    ],
+  }),
   component: HomePage,
 });
+
 
 // -------- image sources (real photography from Unsplash — free to use) --------
 const HERO_IMG =
