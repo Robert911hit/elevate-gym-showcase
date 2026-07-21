@@ -320,12 +320,13 @@ function HomePage() {
               ))}
             </ul>
             <div className="flex items-center gap-2">
-              <a
-                href="#contact"
+              <button
+                type="button"
+                onClick={() => booking.open()}
                 className="hidden rounded-full gradient-brand px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03] hover:shadow-xl sm:inline-flex"
               >
                 Book a Free Trial
-              </a>
+              </button>
               <button
                 aria-label={navOpen ? "Close menu" : "Open menu"}
                 onClick={() => setNavOpen((o) => !o)}
@@ -357,13 +358,13 @@ function HomePage() {
                   </li>
                 ))}
                 <li className="pt-2">
-                  <a
-                    href="#contact"
-                    onClick={() => setNavOpen(false)}
-                    className="block rounded-2xl gradient-brand px-4 py-3 text-center font-semibold text-white"
+                  <button
+                    type="button"
+                    onClick={() => { setNavOpen(false); booking.open(); }}
+                    className="block w-full rounded-2xl gradient-brand px-4 py-3 text-center font-semibold text-white"
                   >
                     Book a Free Trial
-                  </a>
+                  </button>
                 </li>
               </ul>
             </motion.div>
